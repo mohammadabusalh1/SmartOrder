@@ -119,6 +119,12 @@ module.exports = {
 
   Mutation: {
     events: async (_, { input }) => {
+      console.log('Users service events');
+      return {
+        id: '1',
+        type: 'user_created',
+        data: {}
+      };
     },
     // Register a new user
     register: async (_, { input }) => {

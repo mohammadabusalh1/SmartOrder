@@ -1,6 +1,7 @@
 const {
   Order
-} = require('../../models/Order');
+} = require('../models/Order');
+const JSONScalar = require('./scalars/json');
 
 // Utility functions to convert between GraphQL enums (UPPERCASE) and Mongoose enums (lowercase)
 const toGraphQLEnum = (value) => {
@@ -104,6 +105,7 @@ const transformOrderForGraphQL = (order) => {
 };
 
 const orderResolvers = {
+  JSON: JSONScalar,
   Query: {
     // Order queries
     order: async (_, { id }) => {
@@ -353,6 +355,12 @@ const orderResolvers = {
 
   Mutation: {
     events: async (_, { input }) => {
+      console.log('Order service events');
+      return {
+        id: '1',
+        type: 'order_created',
+        data: {}
+      };
     },
     // Order mutations
     createOrder: async (_, { input }) => {

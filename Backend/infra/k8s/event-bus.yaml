@@ -1,0 +1,39 @@
+# event bus deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-bus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-bus
+  template:
+    metadata:
+      labels:
+        app: event-bus
+    spec:
+      containers:
+        - name: event-bus
+          image: event-bus:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus
+spec:
+  selector:
+    app: event-bus
+  ports:
+    - protocol: TCP
+      port: 4005
+      targetPort: 4005

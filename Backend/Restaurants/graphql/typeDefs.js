@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   scalar DateTime
+  scalar JSON
 
   type Restaurant {
     owner_user_id: ID!
@@ -165,7 +166,18 @@ const typeDefs = gql`
     dietary_tags: [String!]
     portion_size: String
   }
-  
+
+  input EventInput {
+    type: String!
+    data: JSON!
+  }
+
+  type Event {
+    id: ID!
+    type: String!
+    data: JSON!
+  }
+
   type Query {
     restaurants: [Restaurant!]!
     restaurant(id: ID!): Restaurant!
@@ -176,6 +188,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    events(input: EventInput!): Event!
     registerRestaurant(restaurantInput: RestaurantInput!): Restaurant!
     updateRestaurant(id: ID!, restaurantInput: RestaurantInput!): Restaurant!
     deleteRestaurant(id: ID!): Boolean!

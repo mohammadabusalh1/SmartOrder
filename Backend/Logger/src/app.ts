@@ -83,6 +83,8 @@ app.post("/events", async (req, res) => {
     await errorLog.save();
     logger.info(`Log saved successfully from service: ${service}`);
     res.status(201).json(errorLog);
+  } else {
+    console.log("Unknown event type:", type);
   }
 });
 

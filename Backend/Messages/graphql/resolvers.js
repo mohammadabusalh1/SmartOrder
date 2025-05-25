@@ -76,6 +76,12 @@ const resolvers = {
   Mutation: {
     // event bus
     events: async (_, { input }) => {
+      console.log('Messages service events');
+      return {
+        id: '1',
+        type: 'message_created',
+        data: {}
+      };
     },
     // Create a new conversation
     createConversation: async (_, { input }) => {

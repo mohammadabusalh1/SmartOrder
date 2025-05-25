@@ -98,6 +98,17 @@ module.exports = gql`
     to: String!
   }
 
+  input EventInput {
+    type: String!
+    data: JSON!
+  }
+
+  type Event {
+    id: ID!
+    type: String!
+    data: JSON!
+  }
+  
   type Query {
     # Just a placeholder query, authentication primarily uses mutations
     me: User
@@ -107,6 +118,7 @@ module.exports = gql`
   }
 
   type Mutation {
+    events(input: EventInput!): Event!
     # Auth mutations
     register(input: RegisterInput!): RegisterResponse!
     login(input: LoginInput!): AuthResponse!

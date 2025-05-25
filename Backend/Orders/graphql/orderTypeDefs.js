@@ -1,6 +1,8 @@
 const { gql } = require('apollo-server-express');
 
 const orderTypeDefs = gql`
+  scalar JSON
+
   enum OrderStatus {
     PENDING
     BIDDING
@@ -338,8 +340,20 @@ const orderTypeDefs = gql`
     restaurantBids(restaurant_id: ID!, status: [BidStatus!]): [Bid!]!
   }
 
+  input EventInput {
+    type: String!
+    data: JSON!
+  }
+
+  type Event {
+    id: ID!
+    type: String!
+    data: JSON!
+  }
+
   # Mutations
   type Mutation {
+    events(input: EventInput!): Event!
     # Order mutations
     createOrder(input: CreateOrderInput!): Order!
     updateOrder(id: ID!, input: UpdateOrderInput!): Order!

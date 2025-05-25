@@ -1,7 +1,9 @@
 const { Restaurant, Category } = require('../models/Restaurant');
-const { AuthenticationError, UserInputError } = require('apollo-server-express');
+const { UserInputError } = require('apollo-server-express');
+const JSONScalar = require('./scalars/json');
 
 const resolvers = {
+  JSON: JSONScalar,
   Query: {
     restaurants: async () => {
       try {
@@ -83,6 +85,12 @@ const resolvers = {
 
   Mutation: {
     events: async (_, { input }) => {
+      console.log('Restaurants service events');
+      return {
+        id: '1',
+        type: 'restaurant_created',
+        data: {}
+      };
     },
     registerRestaurant: async (_, { restaurantInput }) => {
       try {

@@ -3,8 +3,8 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const typeDefs = require('./graphql/typeDefs/orderTypeDefs');
-const resolvers = require('./graphql/resolvers/orderResolvers');
+const typeDefs = require('./graphql/orderTypeDefs');
+const resolvers = require('./graphql/orderResolvers');
 
 // Initialize express
 const app = express();

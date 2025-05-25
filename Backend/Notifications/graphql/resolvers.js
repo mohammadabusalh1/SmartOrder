@@ -40,6 +40,12 @@ const resolvers = {
 
   Mutation: {
     events: async (_, { input }) => {
+      console.log('Notification service events');
+      return {
+        id: '1',
+        type: 'notification_created',
+        data: {}
+      };
     },
     // Create a new notification
     createNotification: async (_, { input }) => {

@@ -1,27 +1,27 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import axios from "axios";
 import mongoose from "mongoose";
 import { Event } from "./model/Event";
 import logger from "./utils/logger";
-import ports from "./ports";
-import { gql, GraphQLClient } from "graphql-request";
+import {
+  messageService,
+  notificationService,
+  orderService,
+  restaurantService,
+  userService,
+  sendEventToMessageService,
+  sendEventToNotificationService,
+  sendEventToOrderService,
+  sendEventToRestaurantService,
+  sendEventToUserService,
+} from "./apis/graphql";
+import { sendEventToLogger } from "./apis/rest";
 
 const app = express();
 app.use(bodyParser.json());
 
 const MONGODB_URI: string =
   process.env.MONGODB_URI || "mongodb://localhost:27017/logger";
-
-const messageService = new GraphQLClient(`http://localhost:${ports.messages}`);
-const notificationService = new GraphQLClient(
-  `http://localhost:${ports.notifications}`
-);
-const orderService = new GraphQLClient(`http://localhost:${ports.orders}`);
-const restaurantService = new GraphQLClient(
-  `http://localhost:${ports.restaurants}`
-);
-const userService = new GraphQLClient(`http://localhost:${ports.users}`);
 
 mongoose
   .connect(MONGODB_URI)
@@ -34,46 +34,6 @@ app.post("/events", async (req: Request, res: Response) => {
   const eventObject = new Event(event);
   await eventObject.save();
 
-  const sendEventToMessageService = gql`
-    mutation Mutation($input: EventInput!) {
-      events(input: $input) {
-        id
-      }
-    }
-  `;
-
-  const sendEventToNotificationService = gql`
-    mutation Mutation($input: EventInput!) {
-      events(input: $input) {
-        id
-      }
-    }
-  `;
-
-  const sendEventToOrderService = gql`
-    mutation Mutation($input: EventInput!) {
-      events(input: $input) {
-        id
-      }
-    }
-  `;
-
-  const sendEventToRestaurantService = gql`
-    mutation Mutation($input: EventInput!) {
-      events(input: $input) {
-        id
-      }
-    }
-  `;
-
-  const sendEventToUserService = gql`
-    mutation Mutation($input: EventInput!) {
-      events(input: $input) {
-        id
-      }
-    }
-  `;
-
   await messageService.request(sendEventToMessageService, { input: event });
   await notificationService.request(sendEventToNotificationService, {
     input: event,
@@ -84,15 +44,7 @@ app.post("/events", async (req: Request, res: Response) => {
   });
   await userService.request(sendEventToUserService, { input: event });
 
-  axios.post(`http://localhost:${ports.logger}/events`, event).catch((err) => {
-    axios.post("http://localhost:4006/api/logs", {
-      type: "ErrorLogCreated",
-      data: {
-        ...event,
-        service: "event-bus",
-      },
-    });
-  });
+  await sendEventToLogger(event);
 
   res.send({ status: "OK" });
 });

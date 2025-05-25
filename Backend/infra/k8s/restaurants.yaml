@@ -1,0 +1,39 @@
+# event bus deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurants
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restaurants
+  template:
+    metadata:
+      labels:
+        app: restaurants
+    spec:
+      containers:
+        - name: restaurants
+          image: restaurants:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: restaurants
+spec:
+  selector:
+    app: restaurants
+  ports:
+    - protocol: TCP
+      port: 4004
+      targetPort: 4004
