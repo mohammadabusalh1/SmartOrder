@@ -14,11 +14,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const MONGODB_USER = process.env.MONGODB_USER;
+const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
+const MONGODB_HOST = process.env.MONGODB_HOST;
+const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
+
+const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
+
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .connect(MONGODB_URI)
+  .then(() => console.log("MongoDB connected successfully"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Setup Apollo Server
 async function startApolloServer() {

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import { Event } from "./model/Event.js";
@@ -16,12 +16,20 @@ import {
   sendEventToUserService,
 } from "./apis/graphql.js";
 import { sendEventToLogger } from "./apis/rest.js";
+import { authMiddleware } from "./middleware/authentication.js";
 
 const app = express();
 app.use(bodyParser.json());
+app.use("/", authMiddleware);
 
-const MONGODB_URI: string =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/smartorder-event-bus";
+// Add authentication middleware
+
+const MONGODB_USER = process.env.MONGODB_USER;
+const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
+const MONGODB_HOST = process.env.MONGODB_HOST;
+const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
+
+const MONGODB_URI: string = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
 
 const PORT = process.env.PORT || 4001;
 
@@ -30,6 +38,7 @@ mongoose
   .then(() => logger.info("Connected to MongoDB"))
   .catch((err) => logger.error("MongoDB connection error:", err));
 
+// Protected routes
 app.post("/events", async (req: Request, res: Response) => {
   const event = req.body;
 

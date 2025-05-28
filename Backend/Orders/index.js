@@ -15,8 +15,14 @@ app.use(express.json());
 
 // Connect to MongoDB
 const connectDB = async () => {
+  const MONGODB_USER = process.env.MONGODB_USER;
+  const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
+  const MONGODB_HOST = process.env.MONGODB_HOST;
+  const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
+
+  const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/smartorder', {
+    const conn = await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });

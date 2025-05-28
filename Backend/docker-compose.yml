@@ -10,7 +10,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4007
-      - MONGODB_URI=mongodb://mongodb:27017/users
+      - MONGODB_USER=admin
+      - MONGODB_PASSWORD=123456
+      - MONGODB_HOST=mongodb
+      - MONGODB_DATABASE=users
       - JWT_SECRET=smart_order_auth_secret_key_change_in_production
       - JWT_EXPIRY=1h
       - JWT_REFRESH_SECRET=smart_order_refresh_secret_key_change_in_production
@@ -30,7 +33,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4005
-      - MONGODB_URI=mongodb://mongodb:27017/orders
+      - MONGODB_USER=admin
+      - MONGODB_PASSWORD=123456
+      - MONGODB_HOST=mongodb
+      - MONGODB_DATABASE=orders
       - JWT_SECRET=smart_order_auth_secret_key_change_in_production
     depends_on:
       - mongodb
@@ -44,7 +50,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4006
-      - MONGODB_URI=mongodb://mongodb:27017/restaurants
+      - MONGODB_USER=admin
+      - MONGODB_PASSWORD=123456
+      - MONGODB_HOST=mongodb
+      - MONGODB_DATABASE=restaurants
       - JWT_SECRET=smart_order_auth_secret_key_change_in_production
     depends_on:
       - mongodb
@@ -58,7 +67,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4004
-      - MONGODB_URI=mongodb://mongodb:27017/notifications
+      - MONGODB_USER=admin
+      - MONGODB_PASSWORD=123456
+      - MONGODB_HOST=mongodb
+      - MONGODB_DATABASE=notifications
       - JWT_SECRET=smart_order_auth_secret_key_change_in_production
     depends_on:
       - mongodb
@@ -72,7 +84,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4003
-      - MONGODB_URI=mongodb://mongodb:27017/messages
+      - MONGODB_USER=admin
+      - MONGODB_PASSWORD=123456
+      - MONGODB_HOST=mongodb
+      - MONGODB_DATABASE=messages
       - JWT_SECRET=smart_order_auth_secret_key_change_in_production
     depends_on:
       - mongodb
@@ -86,7 +101,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4002
-      - MONGODB_URI=mongodb://mongodb:27017/logger
+      - MONGODB_USER=admin
+      - MONGODB_PASSWORD=123456
+      - MONGODB_HOST=mongodb
+      - MONGODB_DATABASE=logger
       - LOG_LEVEL=info
       - JWT_SECRET=smart_order_auth_secret_key_change_in_production
     depends_on:
@@ -101,7 +119,10 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4001
-      - MONGODB_URI=mongodb://mongodb:27017/smartorder-event-bus
+      - MONGODB_USER=admin
+      - MONGODB_PASSWORD=123456
+      - MONGODB_HOST=mongodb
+      - MONGODB_DATABASE=event-bus
     depends_on:
       - mongodb
 
@@ -110,10 +131,13 @@ services:
     ports:
       - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+      - MONGO_INITDB_DATABASE=admin
+    command: mongod --auth --bind_ip_all
     volumes:
       - mongodb_data:/data/db
+      - ./mongodb/init-scripts:/docker-entrypoint-initdb.d
 
 volumes:
   mongodb_data:

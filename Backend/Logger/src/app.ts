@@ -9,8 +9,13 @@ config();
 
 const app = express();
 const PORT = process.env.PORT;
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/logger";
+
+const MONGODB_USER = process.env.MONGODB_USER;
+const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
+const MONGODB_HOST = process.env.MONGODB_HOST;
+const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
+
+const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
 
 app.use(cors());
 app.use(express.json());

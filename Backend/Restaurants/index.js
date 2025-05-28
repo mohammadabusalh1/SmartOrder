@@ -15,13 +15,27 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+const MONGODB_USER = process.env.MONGODB_USER;
+const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
+const MONGODB_HOST = process.env.MONGODB_HOST;
+const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
+
+const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
+
+async function connectToMongoDB() {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw error;
+  }
+}
 
 // Setup Apollo Server
 async function startApolloServer() {
+  await connectToMongoDB();
+
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
