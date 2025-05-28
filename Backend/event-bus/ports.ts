@@ -8,12 +8,12 @@ interface Ports {
 }
 
 const ports: Ports = {
-  messages: 4001,
-  notifications: 4002,
-  orders: 4003,
-  restaurants: 4004,
-  users: 4005,
-  logger: 4006,
+  messages: 4003,
+  notifications: 4004,
+  orders: 4005,
+  restaurants: 4006,
+  users: 4007,
+  logger: 4002,
 };
 
 export default ports;

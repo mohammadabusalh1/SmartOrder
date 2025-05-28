@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: event-bus
-          image: event-bus:latest
+          image: abusalh/event-bus:latest
           resources:
             requests:
               memory: "64Mi"
@@ -35,5 +35,21 @@ spec:
     app: event-bus
   ports:
     - protocol: TCP
-      port: 4005
-      targetPort: 4005
+      port: 4001
+      targetPort: 4001
+
+---
+# create NodePort service for event-bus
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: event-bus
+  ports:
+    - protocol: TCP
+      port: 4001
+      targetPort: 4001
+      # nodePort: 30001

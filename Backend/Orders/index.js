@@ -16,7 +16,7 @@ app.use(express.json());
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/smartorder_orders', {
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/smartorder', {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
@@ -66,7 +66,7 @@ app.get('/health', (req, res) => {
 });
 
 // Set port
-const PORT = process.env.PORT || 4003;
+const PORT = process.env.PORT;
 
 // Start server
 const startServer = async () => {

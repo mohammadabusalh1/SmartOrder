@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import { Event } from "./model/Event";
-import logger from "./utils/logger";
+import { Event } from "./model/Event.js";
+import logger from "./utils/logger.js";
 import {
   messageService,
   notificationService,
@@ -14,14 +14,16 @@ import {
   sendEventToOrderService,
   sendEventToRestaurantService,
   sendEventToUserService,
-} from "./apis/graphql";
-import { sendEventToLogger } from "./apis/rest";
+} from "./apis/graphql.js";
+import { sendEventToLogger } from "./apis/rest.js";
 
 const app = express();
 app.use(bodyParser.json());
 
 const MONGODB_URI: string =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/logger";
+  process.env.MONGODB_URI || "mongodb://localhost:27017/smartorder-event-bus";
+
+const PORT = process.env.PORT || 4001;
 
 mongoose
   .connect(MONGODB_URI)
@@ -54,6 +56,6 @@ app.get("/events", async (_req: Request, res: Response) => {
   res.send(events);
 });
 
-app.listen(4005, () => {
-  console.log("Listening on 4005");
+app.listen(PORT, () => {
+  logger.info(`Listening on http://localhost:${PORT}`);
 });

@@ -36,7 +36,7 @@ async function startApolloServer() {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: '/graphql' });
 
-  const PORT = process.env.PORT || 4004;
+  const PORT = process.env.PORT;
   app.listen(PORT, () => {
     console.log(`Restaurants service running on port ${PORT}`);
     console.log(`GraphQL endpoint: http://localhost:${PORT}${apolloServer.graphqlPath}`);

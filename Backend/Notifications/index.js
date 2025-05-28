@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
-const { authentication } = require('../Users/middleware/authentication');
+const { authentication } = require('./middleware/authentication');
 
 // Initialize express
 const app = express();
@@ -35,8 +35,8 @@ async function startApolloServer() {
 
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: '/graphql' });
-  
-  const PORT = process.env.PORT || 4002;
+
+  const PORT = process.env.PORT;
   app.listen(PORT, () => {
     console.log(`Notifications service running on port ${PORT}`);
     console.log(`GraphQL endpoint: http://localhost:${PORT}${apolloServer.graphqlPath}`);

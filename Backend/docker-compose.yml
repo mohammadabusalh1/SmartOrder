@@ -1,0 +1,119 @@
+version: "3.8"
+
+services:
+  users:
+    build:
+      context: ./Users
+      dockerfile: Dockerfile
+    ports:
+      - "4007:4007"
+    environment:
+      - NODE_ENV=development
+      - PORT=4007
+      - MONGODB_URI=mongodb://mongodb:27017/users
+      - JWT_SECRET=smart_order_auth_secret_key_change_in_production
+      - JWT_EXPIRY=1h
+      - JWT_REFRESH_SECRET=smart_order_refresh_secret_key_change_in_production
+      - JWT_REFRESH_EXPIRY=7d
+      - VERIFICATION_TOKEN_EXPIRY=24h
+      - PASSWORD_RESET_EXPIRY=10m
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - mongodb
+
+  orders:
+    build:
+      context: ./Orders
+      dockerfile: Dockerfile
+    ports:
+      - "4005:4005"
+    environment:
+      - NODE_ENV=development
+      - PORT=4005
+      - MONGODB_URI=mongodb://mongodb:27017/orders
+      - JWT_SECRET=smart_order_auth_secret_key_change_in_production
+    depends_on:
+      - mongodb
+
+  restaurants:
+    build:
+      context: ./Restaurants
+      dockerfile: Dockerfile
+    ports:
+      - "4006:4006"
+    environment:
+      - NODE_ENV=development
+      - PORT=4006
+      - MONGODB_URI=mongodb://mongodb:27017/restaurants
+      - JWT_SECRET=smart_order_auth_secret_key_change_in_production
+    depends_on:
+      - mongodb
+
+  notifications:
+    build:
+      context: ./Notifications
+      dockerfile: Dockerfile
+    ports:
+      - "4004:4004"
+    environment:
+      - NODE_ENV=development
+      - PORT=4004
+      - MONGODB_URI=mongodb://mongodb:27017/notifications
+      - JWT_SECRET=smart_order_auth_secret_key_change_in_production
+    depends_on:
+      - mongodb
+
+  messages:
+    build:
+      context: ./Messages
+      dockerfile: Dockerfile
+    ports:
+      - "4003:4003"
+    environment:
+      - NODE_ENV=development
+      - PORT=4003
+      - MONGODB_URI=mongodb://mongodb:27017/messages
+      - JWT_SECRET=smart_order_auth_secret_key_change_in_production
+    depends_on:
+      - mongodb
+
+  logger:
+    build:
+      context: ./Logger
+      dockerfile: Dockerfile
+    ports:
+      - "4002:4002"
+    environment:
+      - NODE_ENV=development
+      - PORT=4002
+      - MONGODB_URI=mongodb://mongodb:27017/logger
+      - LOG_LEVEL=info
+      - JWT_SECRET=smart_order_auth_secret_key_change_in_production
+    depends_on:
+      - mongodb
+
+  event-bus:
+    build:
+      context: ./event-bus
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      - NODE_ENV=development
+      - PORT=4001
+      - MONGODB_URI=mongodb://mongodb:27017/smartorder-event-bus
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

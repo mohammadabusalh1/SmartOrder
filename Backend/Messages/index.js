@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
-const { authentication } = require('../Users/middleware/authentication');
+const { authentication } = require('./middleware/authentication');
 
 // Initialize express
 const app = express();
@@ -25,6 +25,12 @@ async function startApolloServer() {
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    /**
+     * Add authentication to the GraphQL context
+     * @param {Object} obj - { req }
+     * @param {Object} obj.req - Express request object
+     * @returns {Object} - { user } where user is authenticated user object or null
+     */
     context: ({ req }) => {
       // Add authentication to the GraphQL context
       const token = req.headers.authorization || '';
@@ -35,8 +41,8 @@ async function startApolloServer() {
 
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: '/graphql' });
-  
-  const PORT = process.env.PORT || 4001;
+
+  const PORT = process.env.PORT;
   app.listen(PORT, () => {
     console.log(`Messages service running on port ${PORT}`);
     console.log(`GraphQL endpoint: http://localhost:${PORT}${apolloServer.graphqlPath}`);

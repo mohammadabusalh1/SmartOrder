@@ -35,5 +35,5 @@ spec:
     app: users
   ports:
     - protocol: TCP
-      port: 4005
-      targetPort: 4005
+      port: 4007
+      targetPort: 4007

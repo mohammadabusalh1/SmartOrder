@@ -16,9 +16,6 @@ RUN npm install -g typescript
 # Copy the rest of the application code
 COPY . .
 
-# Compile TypeScript to JavaScript
-RUN tsc
-
 # Create a non-root user to run the application
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nodejs -u 1001
@@ -28,7 +25,7 @@ RUN chown -R nodejs:nodejs /app
 USER nodejs
 
 # Expose the port the app runs on
-EXPOSE 4005
+EXPOSE 4001
 
-# Define the command to run the application
-CMD ["node", "event-bus.js"] 
+# Build and run the application
+CMD ["sh", "-c", "npm run build && node dist/event-bus.js"] 

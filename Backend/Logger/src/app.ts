@@ -8,7 +8,7 @@ import logger from "./config/logger";
 config();
 
 const app = express();
-const PORT = process.env.PORT || 4006;
+const PORT = process.env.PORT;
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/logger";
 
@@ -22,7 +22,7 @@ mongoose
   .catch((err) => logger.error("MongoDB connection error:", err));
 
 // Routes
-app.post("/api/logs", async (req, res) => {
+app.post("logs", async (req, res) => {
   try {
     const { service, level, message, metadata } = req.body;
 
@@ -44,7 +44,7 @@ app.post("/api/logs", async (req, res) => {
 });
 
 // Get logs with filtering
-app.get("/api/logs", async (req, res) => {
+app.get("logs", async (req, res) => {
   try {
     const { service, level, startDate, endDate, limit = 100 } = req.query;
 

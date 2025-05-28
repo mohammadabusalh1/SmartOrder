@@ -2,10 +2,11 @@
   "name": "event-bus-microservices",
   "version": "1.0.0",
   "main": "event-bus.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "node event-bus.js",
-    "dev": "ts-node event-bus.ts",
+    "start": "node dist/event-bus.js",
+    "dev": "nodemon event-bus.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,7 +16,9 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^5.1.0",
+    "graphql": "^16.8.1",
     "graphql-request": "^7.1.2",
+    "nodemon": "^3.1.10",
     "redis": "^5.1.0",
     "uuid": "^11.1.0"
   },

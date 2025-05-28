@@ -5,15 +5,15 @@ const validateToken = (token) => {
   if (!token) {
     return null;
   }
-  
+
   try {
     // Remove "Bearer " prefix if present
     if (token.startsWith('Bearer ')) {
       token = token.slice(7);
     }
-    
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     return {
       id: decoded.id,
       email: decoded.email,

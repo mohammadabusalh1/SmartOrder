@@ -14,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+console.log(process.env.MONGODB_URI);
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -47,7 +48,7 @@ async function startApolloServer() {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: '/graphql' });
 
-  const PORT = process.env.PORT || 4005;
+  const PORT = process.env.PORT;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`GraphQL endpoint: http://localhost:${PORT}${apolloServer.graphqlPath}`);
