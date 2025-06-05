@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -24,17 +25,16 @@ app.use("/", authMiddleware);
 
 // Add authentication middleware
 
-const MONGODB_USER = process.env.MONGODB_USER;
-const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
-const MONGODB_HOST = process.env.MONGODB_HOST;
-const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
+const MONGO_URL =
+  process.env.MONGO_URL || "mongodb://mongodb-service:27017/event-bus";
 
-const MONGODB_URI: string = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
-
+if (!MONGO_URL) {
+  throw new Error("MONGO_URL environment variable is not defined");
+}
 const PORT = process.env.PORT || 4001;
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGO_URL)
   .then(() => logger.info("Connected to MongoDB"))
   .catch((err) => logger.error("MongoDB connection error:", err));
 

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: logger
-          image: logger:latest
+          image: abusalh/logger:latest
           resources:
             requests:
               memory: "64Mi"

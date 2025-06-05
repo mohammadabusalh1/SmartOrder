@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: notification
-          image: notification:latest
+          image: abusalh/notifications:latest
           resources:
             requests:
               memory: "64Mi"

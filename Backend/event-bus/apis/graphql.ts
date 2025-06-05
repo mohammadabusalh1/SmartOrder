@@ -1,24 +1,29 @@
 import { GraphQLClient, gql } from "graphql-request";
 import ports from "../ports.js";
 
-const isDocker = process.env.DOCKER === "true";
-const baseUrl = isDocker ? "" : "localhost";
+// const isDocker = process.env.DOCKER === "true";
+// const baseUrl = isDocker ? "" : "localhost";
+const message = process.env.MESSAGE_SERVICE || "message-service";
+const notification = process.env.NOTIFICATION_SERVICE || "notification-service";
+const order = process.env.ORDER_SERVICE || "order-service";
+const restaurant = process.env.RESTAURANT_SERVICE || "restaurant-service";
+const user = process.env.USER_SERVICE || "user-service";
 
 // Initialize GraphQL clients
 export const messageService = new GraphQLClient(
-  `http://${baseUrl}:${ports.messages}/graphql`
+  `http://${message}:${ports.messages}/graphql`
 );
 export const notificationService = new GraphQLClient(
-  `http://${baseUrl}:${ports.notifications}/graphql`
+  `http://${notification}:${ports.notifications}/graphql`
 );
 export const orderService = new GraphQLClient(
-  `http://${baseUrl}:${ports.orders}/graphql`
+  `http://${order}:${ports.orders}/graphql`
 );
 export const restaurantService = new GraphQLClient(
-  `http://${baseUrl}:${ports.restaurants}/graphql`
+  `http://${restaurant}:${ports.restaurants}/graphql`
 );
 export const userService = new GraphQLClient(
-  `http://${baseUrl}:${ports.users}/graphql`
+  `http://${user}:${ports.users}/graphql`
 );
 
 // GraphQL mutations

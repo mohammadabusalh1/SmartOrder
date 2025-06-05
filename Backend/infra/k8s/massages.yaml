@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: messages
-          image: messages:latest
+          image: abusalh/messages:latest
           resources:
             requests:
               memory: "64Mi"

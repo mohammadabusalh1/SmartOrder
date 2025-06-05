@@ -1,3 +1,4 @@
+const mongoose = require('mongoose'); // Add this import for ObjectId
 const Notification = require('../models/Notification');
 const JSONScalar = require('./scalars/json');
 
@@ -7,11 +8,12 @@ const resolvers = {
     // Get all notifications for a user
     notifications: async (_, { userId, limit = 20, offset = 0 }) => {
       try {
-        return await Notification.find({ recipient_user_id: userId })
+        return await Notification.find({ recipient_user_id: userId }) // Use userId directly
           .sort({ created_at: -1 })
           .skip(offset)
           .limit(limit);
       } catch (error) {
+        console.log(error);
         throw new Error(`Failed to fetch notifications: ${error.message}`);
       }
     },
@@ -28,8 +30,11 @@ const resolvers = {
     // Count unread notifications for a user
     unreadNotificationsCount: async (_, { userId }) => {
       try {
+        if (!mongoose.isValidObjectId(userId)) {
+          throw new Error('Invalid user ID');
+        }
         return await Notification.countDocuments({
-          recipient_user_id: userId,
+          recipient_user_id: userId, // Use userId directly
           is_read: false
         });
       } catch (error) {
@@ -76,9 +81,12 @@ const resolvers = {
     // Mark all notifications as read for a user
     markAllNotificationsAsRead: async (_, { userId }) => {
       try {
+        if (!mongoose.isValidObjectId(userId)) {
+          throw new Error('Invalid user ID');
+        }
         await Notification.updateMany(
           {
-            recipient_user_id: userId,
+            recipient_user_id: userId, // Use userId directly
             is_read: false
           },
           {
@@ -108,4 +116,4 @@ const resolvers = {
   }
 };
 
-module.exports = resolvers; 
+module.exports = resolvers;

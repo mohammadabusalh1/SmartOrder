@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: restaurants
-          image: restaurants:latest
+          image: abusalh/restaurants:latest
           resources:
             requests:
               memory: "64Mi"

@@ -36,7 +36,7 @@ const BidStatusEnum = {
 // ===================== OrderItem Schema (Child) =====================
 const orderItemSchema = new mongoose.Schema({
   menu_item_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'MenuItem',
     default: null
   },
@@ -92,7 +92,7 @@ orderItemSchema.pre('save', function(next) {
 // ===================== Payment Schema (Child) =====================
 const paymentSchema = new mongoose.Schema({
   customer_user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'User',
     required: [true, 'Customer user ID is required']
   },
@@ -177,7 +177,7 @@ paymentSchema.pre('save', function(next) {
 // ===================== Bid Schema (Child) =====================
 const bidSchema = new mongoose.Schema({
   restaurant_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'Restaurant',
     required: [true, 'Restaurant ID is required']
   },
@@ -268,7 +268,7 @@ bidSchema.methods.isValidBid = function() {
 // ===================== Address Schema (Child) =====================
 const addressSchema = new mongoose.Schema({
   user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'User',
     default: null
   },
@@ -366,12 +366,12 @@ addressSchema.virtual('full_address').get(function() {
 // ===================== Main Order Schema =====================
 const orderSchema = new mongoose.Schema({
   customer_user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'User',
     required: [true, 'Customer user ID is required']
   },
   restaurant_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'Restaurant',
     default: null
   },
@@ -384,7 +384,7 @@ const orderSchema = new mongoose.Schema({
     required: [true, 'Order description is required']
   },
   category_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'Category',
     default: null
   },
@@ -445,7 +445,7 @@ const orderSchema = new mongoose.Schema({
     }
   },
   promo_code_applied_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'Promotion',
     default: null
   },

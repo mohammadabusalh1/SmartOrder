@@ -1,10 +1,10 @@
-require('dotenv').config();
-const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const typeDefs = require('./graphql/orderTypeDefs');
-const resolvers = require('./graphql/orderResolvers');
+require("dotenv").config();
+const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const typeDefs = require("./graphql/orderTypeDefs");
+const resolvers = require("./graphql/orderResolvers");
 
 // Initialize express
 const app = express();
@@ -15,16 +15,11 @@ app.use(express.json());
 
 // Connect to MongoDB
 const connectDB = async () => {
-  const MONGODB_USER = process.env.MONGODB_USER;
-  const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
-  const MONGODB_HOST = process.env.MONGODB_HOST;
-  const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
-
-  const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
+  const MONGODB_URI = process.env.MONGO_URL || 'mongodb://mongodb-service:27017/orders';
   try {
     const conn = await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     });
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
@@ -42,7 +37,7 @@ const startApolloServer = async () => {
     context: ({ req }) => {
       // Here you would normally extract the user from the request
       // and add it to the context
-      const token = req.headers.authorization || '';
+      const token = req.headers.authorization || "";
 
       // For now, we'll return a simple context
       return { token };
@@ -51,24 +46,26 @@ const startApolloServer = async () => {
       console.error(err);
 
       // Don't expose internal server errors to the client
-      if (err.message.startsWith('Database Error:')) {
-        return new Error('Internal server error');
+      if (err.message.startsWith("Database Error:")) {
+        return new Error("Internal server error");
       }
 
       // Otherwise return the original error
       return err;
-    }
+    },
   });
 
   await server.start();
-  server.applyMiddleware({ app, path: '/graphql' });
+  server.applyMiddleware({ app, path: "/graphql" });
 
-  console.log(`Apollo Server running at http://localhost:${PORT}${server.graphqlPath}`);
+  console.log(
+    `Apollo Server running at http://localhost:${PORT}${server.graphqlPath}`
+  );
 };
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', service: 'orders-service' });
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", service: "orders-service" });
 });
 
 // Set port
@@ -85,11 +82,11 @@ const startServer = async () => {
 };
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.error('UNHANDLED REJECTION! 💥 Shutting down...');
+process.on("unhandledRejection", (err) => {
+  console.error("UNHANDLED REJECTION! 💥 Shutting down...");
   console.error(err);
   process.exit(1);
 });
 
 // Start the server
-startServer(); 
+startServer();

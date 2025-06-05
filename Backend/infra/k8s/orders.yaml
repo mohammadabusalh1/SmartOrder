@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: orders
-          image: orders:latest
+          image: abusalh/orders:latest
           resources:
             requests:
               memory: "64Mi"

@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -8,21 +9,20 @@ import logger from "./config/logger";
 config();
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4002;
+const MONGO_URL =
+  process.env.MONGO_URL || "mongodb://mongodb-service:27017/logger";
 
-const MONGODB_USER = process.env.MONGODB_USER;
-const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
-const MONGODB_HOST = process.env.MONGODB_HOST;
-const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
-
-const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_DATABASE}?authSource=admin`;
+if (!PORT || !MONGO_URL) {
+  throw new Error("Missing required environment variables: PORT or MONGO_URL");
+}
 
 app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGO_URL)
   .then(() => logger.info("Connected to MongoDB"))
   .catch((err) => logger.error("MongoDB connection error:", err));
 

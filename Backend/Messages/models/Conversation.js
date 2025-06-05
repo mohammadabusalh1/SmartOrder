@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 
 const conversationSchema = new mongoose.Schema({
   order_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'Order',
     default: null
   },
   sender_user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'User',
     required: true
   },
   receiver_user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'User',
     required: true
   },

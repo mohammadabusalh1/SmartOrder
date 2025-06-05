@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: users
-          image: users:latest
+          image: abusalh/users:latest
           resources:
             requests:
               memory: "64Mi"
